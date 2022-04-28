@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: firstapp
+  labels:
+    app: firstapp
+spec:
+  selector:
+    matchLabels:
+      app: firstapp
+  template:
+    metadata:
+      labels:
+        app: firstapp
+    spec:
+      containers:
+      - name: frontend
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /static
+          name: volume-share
+      - name: debian
+        image: debian
+        command: ["sleep", "3600"]
+        volumeMounts:
+        - mountPath: /tmp
+          name: volume-share
+      volumes:
+        - name: volume-share
+          emptyDir: {}
